@@ -31,10 +31,19 @@ import matplotlib.pyplot as plt
 from sklearn.feature_extraction import image
 from sklearn.cluster import spectral_clustering
 
-lena = sp.misc.lena()
+import skimage
+from skimage import data
+from skimage import transform
+from skimage import io
+from scipy import misc
+
+lena = io.imread('example.png',as_grey=True)[::2, ::2]
+lena = skimage.transform.rescale(lena, 0.5, order=1)
+
+#lena = sp.misc.lena()
 # Downsample the image by a factor of 4
-lena = lena[::2, ::2] + lena[1::2, ::2] + lena[::2, 1::2] + lena[1::2, 1::2]
-lena = lena[::2, ::2] + lena[1::2, ::2] + lena[::2, 1::2] + lena[1::2, 1::2]
+#lena = lena[::2, ::2] + lena[1::2, ::2] + lena[::2, 1::2] + lena[1::2, 1::2]
+#lena = lena[::2, ::2] + lena[1::2, ::2] + lena[::2, 1::2] + lena[1::2, 1::2]
 
 # Convert the image into a graph with the value of the gradient on the
 # edges.
@@ -49,7 +58,7 @@ graph.data = np.exp(-beta * graph.data / lena.std()) + eps
 
 # Apply spectral clustering (this step goes much faster if you have pyamg
 # installed)
-N_REGIONS = 11
+N_REGIONS = 7
 
 ###############################################################################
 # Visualize the resulting regions
